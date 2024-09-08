@@ -1,50 +1,44 @@
 import numpy as np
-import NodeList as NodeList
-import NumericalIntegration as NumericalIntegration
-import Material as Material
+from planeStressPackage.NodeList import NodeList
+from planeStressPackage.NumericalIntegration import NumericalIntegration
+from planeStressPackage.Material import Material
 from scipy.sparse import csr_matrix
+
+from planeStressPackage.Node import Node
 
 
 class Element:
-    def __init__(self, nodelist: NodeList, material: Material, ni: NumericalIntegration, height: float):
+    def __init__(self, nodelist: NodeList, material: Material, case_type: int, ni: NumericalIntegration, height: float):
         self.length = np.zeros(2)
         self.jacobian = None
         self.material = material
-        self.n1 = nodelist.getNode(0)
-        self.n2 = nodelist.getNode(1)
-        self.n3 = nodelist.getNode(2)
-        self.n4 = nodelist.getNode(3)
+        self.nodes = []
         self.dofNumbers = np.zeros(8)
         self.shapeFunctions = None
         self.N = None
         self.dN_dXi = np.zeros((2, 4))
         self.ni = ni
         self.h = height
+        self.state_type = case_type
 
-    def getNode1(self):
-        return self.n1
+    def getNode(self, idx: int):
+        return self.nodes[idx]
 
-    def getNode2(self):
-        return self.n2
-
-    def getNode3(self):
-        return self.n3
-
-    def getNode4(self):
-        return self.n4
+    def setNode(self, idx:int, node: Node):
+        self.nodes.insert(idx, node)
 
     def enumerateDOFs(self):
-        for i in range(len(self.getNode1().getDOFNumbers())):
-            self.dofNumbers[i] = self.getNode1().getDOFNumbers()[i]
+        for i in range(len(self.getNode(0).getDOFNumbers())):
+            self.dofNumbers[i] = self.getNode(0).getDOFNumbers()[i]
 
-        for i, j in zip(range(2, 4), range(len(self.getNode2().getDOFNumbers()))):
-            self.dofNumbers[i] = self.getNode2().getDOFNumbers()[j]
+        for i, j in zip(range(2, 4), range(len(self.getNode(1).getDOFNumbers()))):
+            self.dofNumbers[i] = self.getNode(1).getDOFNumbers()[j]
 
-        for i, j in zip(range(4, 6), range(len(self.getNode2().getDOFNumbers()))):
-            self.dofNumbers[i] = self.getNode3().getDOFNumbers()[j]
+        for i, j in zip(range(4, 6), range(len(self.getNode(2).getDOFNumbers()))):
+            self.dofNumbers[i] = self.getNode(2).getDOFNumbers()[j]
 
-        for i, j in zip(range(6, 8), range(len(self.getNode2().getDOFNumbers()))):
-            self.dofNumbers[i] = self.getNode4().getDOFNumbers()[j]
+        for i, j in zip(range(6, 8), range(len(self.getNode(3).getDOFNumbers()))):
+            self.dofNumbers[i] = self.getNode(3).getDOFNumbers()[j]
 
     def getDOFNumbers(self):
         return self.dofNumbers
@@ -68,13 +62,13 @@ class Element:
                                     ])
             dX = np.zeros((4, 2))
             for u in range(2):
-                dX[0, u] = self.getNode1().getPosition()[u]
+                dX[0, u] = self.getNode(0).getPosition()[u]
             for u in range(2):
-                dX[1, u] = self.getNode2().getPosition()[u]
+                dX[1, u] = self.getNode(1).getPosition()[u]
             for u in range(2):
-                dX[2, u] = self.getNode3().getPosition()[u]
+                dX[2, u] = self.getNode(2).getPosition()[u]
             for u in range(2):
-                dX[3, u] = self.getNode4().getPosition()[u]
+                dX[3, u] = self.getNode(3).getPosition()[u]
             self.jacobian = np.dot(self.dN_dXi, dX)
 
             j_inv = np.linalg.inv(self.jacobian)
@@ -107,7 +101,7 @@ class Element:
             B[2, 7] = dN_dX[0, 3]
             a1 = self.ni.get_alpha()[0]
             a2 = self.ni.get_alpha()[1]
-            c = self.material.get_planeStress_C()
+            c = self.material.get_C(self.state_type)
             b_transpose = np.transpose(B)
             k_gp = (a1 * a2 * self.h * j_det *
                     np.dot(np.dot(b_transpose, c), B))
@@ -121,5 +115,5 @@ class Element:
 
     def getLength(self):
         for i in range(len(self.length)):
-            self.length[i] = np.abs(self.n2.position[i]-self.n1.position[i])
+            self.length[i] = np.abs(self.getNode(1).position[i]-self.getNode(0).position[i])
         return np.sqrt(np.pow(self.length[0], 2)+np.pow(self.length[1], 2))

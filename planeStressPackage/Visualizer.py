@@ -19,17 +19,17 @@ class Visualizer:
         # Create a PolyData object
         for element in range(self.structure.elementlist.get_NumberOfElements()):
             self.ele_length = self.structure.elementlist.getElement(element).getLength()
-            points = np.array([[self.structure.elementlist.getElement(element).getNode1().getPosition()[0],
-                                self.structure.elementlist.getElement(element).getNode1().getPosition()[1],
+            points = np.array([[self.structure.elementlist.getElement(element).getNode(0).getPosition()[0],
+                                self.structure.elementlist.getElement(element).getNode(0).getPosition()[1],
                                 0],
-                               [self.structure.elementlist.getElement(element).getNode2().getPosition()[0],
-                                self.structure.elementlist.getElement(element).getNode2().getPosition()[1],
+                               [self.structure.elementlist.getElement(element).getNode(1).getPosition()[0],
+                                self.structure.elementlist.getElement(element).getNode(1).getPosition()[1],
                                 0],
-                               [self.structure.elementlist.getElement(element).getNode3().getPosition()[0],
-                                self.structure.elementlist.getElement(element).getNode3().getPosition()[1],
+                               [self.structure.elementlist.getElement(element).getNode(2).getPosition()[0],
+                                self.structure.elementlist.getElement(element).getNode(2).getPosition()[1],
                                 0],
-                               [self.structure.elementlist.getElement(element).getNode4().getPosition()[0],
-                                self.structure.elementlist.getElement(element).getNode4().getPosition()[1],
+                               [self.structure.elementlist.getElement(element).getNode(3).getPosition()[0],
+                                self.structure.elementlist.getElement(element).getNode(3).getPosition()[1],
                                 0]
                                ])
             faces = np.array([4, 0, 1, 2, 3])
@@ -42,12 +42,12 @@ class Visualizer:
             self.ele_length = self.structure.elementlist.getElement(element).getLength()
 
             for i in range(2):
-                dirC = self.structure.elementlist.getElement(element).getNode1().getConstraint().isFree(i)
+                dirC = self.structure.elementlist.getElement(element).getNode(0).getConstraint().isFree(i)
                 # print("dirC ",dirC)
                 if not dirC:
                     if i == 0:
-                        center = np.array([self.structure.elementlist.getElement(element).getNode1().getPosition()[0],
-                                           self.structure.elementlist.getElement(element).getNode1().getPosition()[1],
+                        center = np.array([self.structure.elementlist.getElement(element).getNode(0).getPosition()[0],
+                                           self.structure.elementlist.getElement(element).getNode(0).getPosition()[1],
                                            0
                                            ])
                         base_length = self.ele_length * self.symbolscale
@@ -69,8 +69,8 @@ class Visualizer:
                         triangle = pv.PolyData(triangle_points, faces)
                         self.plot.add_mesh(triangle, color='#000080', show_edges=True)
                     if i == 1:
-                        center = np.array([self.structure.elementlist.getElement(element).getNode1().getPosition()[0],
-                                           self.structure.elementlist.getElement(element).getNode1().getPosition()[1],
+                        center = np.array([self.structure.elementlist.getElement(element).getNode(0).getPosition()[0],
+                                           self.structure.elementlist.getElement(element).getNode(0).getPosition()[1],
                                            0
                                            ])
                         base_length = self.ele_length * self.symbolscale
@@ -93,12 +93,12 @@ class Visualizer:
                         self.plot.add_mesh(triangle, color='#000080', show_edges=True)
 
             for i in range(2):
-                dirC = self.structure.elementlist.getElement(element).getNode2().getConstraint().isFree(i)
+                dirC = self.structure.elementlist.getElement(element).getNode(1).getConstraint().isFree(i)
                 # print("dirC ",dirC)
                 if not dirC:
                     if i == 0:
-                        center = np.array([self.structure.elementlist.getElement(element).getNode2().getPosition()[0],
-                                           self.structure.elementlist.getElement(element).getNode2().getPosition()[1],
+                        center = np.array([self.structure.elementlist.getElement(element).getNode(1).getPosition()[0],
+                                           self.structure.elementlist.getElement(element).getNode(1).getPosition()[1],
                                            0
                                            ])
                         base_length = self.ele_length * self.symbolscale
@@ -121,8 +121,8 @@ class Visualizer:
                         self.plot.add_mesh(triangle, color='#000080', show_edges=True)
 
                     if i == 1:
-                        center = np.array([self.structure.elementlist.getElement(element).getNode2().getPosition()[0],
-                                           self.structure.elementlist.getElement(element).getNode2().getPosition()[1],
+                        center = np.array([self.structure.elementlist.getElement(element).getNode(1).getPosition()[0],
+                                           self.structure.elementlist.getElement(element).getNode(1).getPosition()[1],
                                            0
                                            ])
                         base_length = self.ele_length * self.symbolscale
@@ -145,12 +145,12 @@ class Visualizer:
                         self.plot.add_mesh(triangle, color='#000080', show_edges=True)
 
             for i in range(2):
-                dirC = self.structure.elementlist.getElement(element).getNode3().getConstraint().isFree(i)
+                dirC = self.structure.elementlist.getElement(element).getNode(2).getConstraint().isFree(i)
                 # print("dirC ",dirC)
                 if not dirC:
                     if i == 0:
-                        center = np.array([self.structure.elementlist.getElement(element).getNode3().getPosition()[0],
-                                           self.structure.elementlist.getElement(element).getNode3().getPosition()[1],
+                        center = np.array([self.structure.elementlist.getElement(element).getNode(2).getPosition()[0],
+                                           self.structure.elementlist.getElement(element).getNode(2).getPosition()[1],
                                            0
                                            ])
                         base_length = self.ele_length * self.symbolscale
@@ -172,8 +172,8 @@ class Visualizer:
                         triangle = pv.PolyData(triangle_points, faces)
                         self.plot.add_mesh(triangle, color='#000080', show_edges=True)
                     if i == 1:
-                        center = np.array([self.structure.elementlist.getElement(element).getNode3().getPosition()[0],
-                                           self.structure.elementlist.getElement(element).getNode3().getPosition()[1],
+                        center = np.array([self.structure.elementlist.getElement(element).getNode(2).getPosition()[0],
+                                           self.structure.elementlist.getElement(element).getNode(2).getPosition()[1],
                                            0
                                            ])
                         base_length = self.ele_length * self.symbolscale
@@ -196,12 +196,12 @@ class Visualizer:
                         self.plot.add_mesh(triangle, color='#000080', show_edges=True)
 
             for i in range(2):
-                dirC = self.structure.elementlist.getElement(element).getNode4().getConstraint().isFree(i)
+                dirC = self.structure.elementlist.getElement(element).getNode(3).getConstraint().isFree(i)
                 # print("dirC ",dirC)
                 if not dirC:
                     if i == 0:
-                        center = np.array([self.structure.elementlist.getElement(element).getNode4().getPosition()[0],
-                                           self.structure.elementlist.getElement(element).getNode4().getPosition()[1],
+                        center = np.array([self.structure.elementlist.getElement(element).getNode(3).getPosition()[0],
+                                           self.structure.elementlist.getElement(element).getNode(3).getPosition()[1],
                                            0
                                            ])
                         base_length = self.ele_length * self.symbolscale
@@ -223,8 +223,8 @@ class Visualizer:
                         triangle = pv.PolyData(triangle_points, faces)
                         self.plot.add_mesh(triangle, color='#000080', show_edges=True)
                     if i == 1:
-                        center = np.array([self.structure.elementlist.getElement(element).getNode4().getPosition()[0],
-                                           self.structure.elementlist.getElement(element).getNode4().getPosition()[1],
+                        center = np.array([self.structure.elementlist.getElement(element).getNode(3).getPosition()[0],
+                                           self.structure.elementlist.getElement(element).getNode(3).getPosition()[1],
                                            0
                                            ])
                         base_length = self.ele_length * self.symbolscale
@@ -278,25 +278,25 @@ class Visualizer:
         for element in range(self.structure.elementlist.get_NumberOfElements()):
             while max_disp * scale / self.ele_length < 0.5:
                 scale += 0.5
-            points = np.array([[self.structure.elementlist.getElement(element).getNode1().getPosition()[0] +
-                                scale * self.structure.elementlist.getElement(element).getNode1().getDisplacement()[0],
-                                self.structure.elementlist.getElement(element).getNode1().getPosition()[1] +
-                                scale * self.structure.elementlist.getElement(element).getNode1().getDisplacement()[1],
+            points = np.array([[self.structure.elementlist.getElement(element).getNode(0).getPosition()[0] +
+                                scale * self.structure.elementlist.getElement(element).getNode(0).getDisplacement()[0],
+                                self.structure.elementlist.getElement(element).getNode(0).getPosition()[1] +
+                                scale * self.structure.elementlist.getElement(element).getNode(0).getDisplacement()[1],
                                 0],
-                               [self.structure.elementlist.getElement(element).getNode2().getPosition()[0] +
-                                scale * self.structure.elementlist.getElement(element).getNode2().getDisplacement()[0],
-                                self.structure.elementlist.getElement(element).getNode2().getPosition()[1] +
-                                scale * self.structure.elementlist.getElement(element).getNode2().getDisplacement()[1],
+                               [self.structure.elementlist.getElement(element).getNode(1).getPosition()[0] +
+                                scale * self.structure.elementlist.getElement(element).getNode(1).getDisplacement()[0],
+                                self.structure.elementlist.getElement(element).getNode(1).getPosition()[1] +
+                                scale * self.structure.elementlist.getElement(element).getNode(1).getDisplacement()[1],
                                 0],
-                               [self.structure.elementlist.getElement(element).getNode3().getPosition()[0] +
-                                scale * self.structure.elementlist.getElement(element).getNode3().getDisplacement()[0],
-                                self.structure.elementlist.getElement(element).getNode3().getPosition()[1] +
-                                scale * self.structure.elementlist.getElement(element).getNode3().getDisplacement()[1],
+                               [self.structure.elementlist.getElement(element).getNode(2).getPosition()[0] +
+                                scale * self.structure.elementlist.getElement(element).getNode(2).getDisplacement()[0],
+                                self.structure.elementlist.getElement(element).getNode(2).getPosition()[1] +
+                                scale * self.structure.elementlist.getElement(element).getNode(2).getDisplacement()[1],
                                 0],
-                               [self.structure.elementlist.getElement(element).getNode4().getPosition()[0] +
-                                scale * self.structure.elementlist.getElement(element).getNode4().getDisplacement()[0],
-                                self.structure.elementlist.getElement(element).getNode4().getPosition()[1] +
-                                scale * self.structure.elementlist.getElement(element).getNode4().getDisplacement()[1],
+                               [self.structure.elementlist.getElement(element).getNode(3).getPosition()[0] +
+                                scale * self.structure.elementlist.getElement(element).getNode(3).getDisplacement()[0],
+                                self.structure.elementlist.getElement(element).getNode(3).getPosition()[1] +
+                                scale * self.structure.elementlist.getElement(element).getNode(3).getDisplacement()[1],
                                 0]
                                ])
             scalars = np.linspace(0, 1, points.shape[0])

@@ -7,11 +7,10 @@ from planeStressPackage.Geometry import Geometry
 class NodeList:
     def __init__(self, geom: Geometry):
         self.Geometry = geom
-        self.nodeList = np.array([Node(self.Geometry.getPoint(0)[0], self.Geometry.getPoint(0)[1]),
-                                  Node(self.Geometry.getPoint(1)[0], self.Geometry.getPoint(1)[1]),
-                                  Node(self.Geometry.getPoint(2)[0], self.Geometry.getPoint(2)[1]),
-                                  Node(self.Geometry.getPoint(3)[0], self.Geometry.getPoint(3)[1]),
-                                  ])
+        self.nodeList = []
+        for i in range(len(geom.pointList)):
+            self.nodeList.append(Node(geom.pointList[i][0], geom.pointList[i][1]))
+
 
     def getNode(self, idx: int):
         return self.nodeList[idx]
@@ -21,3 +20,5 @@ class NodeList:
 
     def get_NumberOfNodes(self):
         return len(self.nodeList)
+
+

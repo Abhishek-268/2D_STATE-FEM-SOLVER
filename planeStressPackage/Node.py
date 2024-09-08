@@ -11,6 +11,7 @@ class Node:
         self.dofNumbers = np.zeros(2)
         self.position = [x1, x2]
         self.displacement = np.zeros(2)
+      # self.id = 0
 
     def setConstraint(self, c: Constraint):
         self.constraint = c
@@ -24,6 +25,9 @@ class Node:
     def getForce(self):
         return self.force
 
+    # def get_Id(self):
+    #     return self.id
+
     def enumerateDOFs(self, start: int):
         for i in range(len(self.dofNumbers)):
             if self.getConstraint().isFree(i) is True:
@@ -31,6 +35,7 @@ class Node:
                 start += 1
             else:
                 self.dofNumbers[i] = -1
+
         return start
 
     def getDOFNumbers(self):

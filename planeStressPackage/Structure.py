@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.sparse.linalg import spsolve
-from scipy.linalg import solve
 from scipy.sparse import csr_matrix
 from planeStressPackage.NodeList import NodeList
 from planeStressPackage.ElementList import ElementList
@@ -44,63 +43,66 @@ class Structure:
         rglobal[6] = self.nodelist.getNode(3).getForce().getComponents(0)
         rglobal[7] = self.nodelist.getNode(3).getForce().getComponents(1)
         for i in range(self.elementlist.get_NumberOfElements()):
-            if not self.elementlist.getElement(i).getNode1().getConstraint().isFree(0):
+            if not self.elementlist.getElement(i).getNode(0).getConstraint().isFree(0):
                 row_to_remove.append(0)
 
-            if not self.elementlist.getElement(i).getNode1().getConstraint().isFree(1):
+            if not self.elementlist.getElement(i).getNode(0).getConstraint().isFree(1):
                 row_to_remove.append(1)
 
-            if not self.elementlist.getElement(i).getNode2().getConstraint().isFree(0):
+            if not self.elementlist.getElement(i).getNode(1).getConstraint().isFree(0):
                 row_to_remove.append(2)
 
-            if not self.elementlist.getElement(i).getNode2().getConstraint().isFree(1):
+            if not self.elementlist.getElement(i).getNode(1).getConstraint().isFree(1):
                 row_to_remove.append(3)
 
-            if not self.elementlist.getElement(i).getNode3().getConstraint().isFree(0):
+            if not self.elementlist.getElement(i).getNode(2).getConstraint().isFree(0):
                 row_to_remove.append(4)
 
-            if not self.elementlist.getElement(i).getNode3().getConstraint().isFree(1):
+            if not self.elementlist.getElement(i).getNode(2).getConstraint().isFree(1):
                 row_to_remove.append(5)
 
-            if not self.elementlist.getElement(i).getNode4().getConstraint().isFree(0):
+            if not self.elementlist.getElement(i).getNode(3).getConstraint().isFree(0):
                 row_to_remove.append(6)
 
-            if not self.elementlist.getElement(i).getNode4().getConstraint().isFree(1):
+            if not self.elementlist.getElement(i).getNode(3).getConstraint().isFree(1):
                 row_to_remove.append(7)
 
         rglobal_red = np.delete(rglobal, row_to_remove, axis=0)
         rglobal_csr = csr_matrix(rglobal_red)
         return rglobal_csr
 
+
     def assembleStiffnessMatrix(self):
-        KGlobal = np.zeros((8, 8))
+        KGlobal = np.zeros((self.nodelist.get_NumberOfNodes() * 2, self.nodelist.get_NumberOfNodes() * 2))
+
         row_to_remove = []
         col_to_remove = []
         KGlobal_red = []
+
         for i in range(self.elementlist.get_NumberOfElements()):
             KGlobal += self.elementlist.getElement(i).computeStiffnessMatrix()
-            if not self.elementlist.getElement(i).getNode1().getConstraint().isFree(0):
+            if not self.elementlist.getElement(i).getNode(0).getConstraint().isFree(0):
                 row_to_remove.append(0)
                 col_to_remove.append(0)
-            if not self.elementlist.getElement(i).getNode1().getConstraint().isFree(1):
+            if not self.elementlist.getElement(i).getNode(0).getConstraint().isFree(1):
                 row_to_remove.append(1)
                 col_to_remove.append(1)
-            if not self.elementlist.getElement(i).getNode2().getConstraint().isFree(0):
+            if not self.elementlist.getElement(i).getNode(1).getConstraint().isFree(0):
                 row_to_remove.append(2)
                 col_to_remove.append(2)
-            if not self.elementlist.getElement(i).getNode2().getConstraint().isFree(1):
+            if not self.elementlist.getElement(i).getNode(1).getConstraint().isFree(1):
                 row_to_remove.append(3)
                 col_to_remove.append(3)
-            if not self.elementlist.getElement(i).getNode3().getConstraint().isFree(0):
+            if not self.elementlist.getElement(i).getNode(2).getConstraint().isFree(0):
                 row_to_remove.append(4)
                 col_to_remove.append(4)
-            if not self.elementlist.getElement(i).getNode3().getConstraint().isFree(1):
+            if not self.elementlist.getElement(i).getNode(2).getConstraint().isFree(1):
                 row_to_remove.append(5)
                 col_to_remove.append(5)
-            if not self.elementlist.getElement(i).getNode4().getConstraint().isFree(0):
+            if not self.elementlist.getElement(i).getNode(3).getConstraint().isFree(0):
                 row_to_remove.append(6)
                 col_to_remove.append(6)
-            if not self.elementlist.getElement(i).getNode4().getConstraint().isFree(1):
+            if not self.elementlist.getElement(i).getNode(3).getConstraint().isFree(1):
                 row_to_remove.append(7)
                 col_to_remove.append(7)
             KGlobal_red_row = np.delete(KGlobal, row_to_remove, axis=0)

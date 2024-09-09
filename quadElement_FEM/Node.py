@@ -1,6 +1,6 @@
 import numpy as np
-from planeStressPackage.Constraint import Constraint
-from planeStressPackage.Force import Force
+from quadElement_FEM.Constraint import Constraint
+from quadElement_FEM.Force import Force
 
 
 class Node:

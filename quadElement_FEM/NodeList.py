@@ -1,7 +1,7 @@
 import numpy as np
 
-from planeStressPackage.Node import Node
-from planeStressPackage.Geometry import Geometry
+from quadElement_FEM.Node import Node
+from quadElement_FEM.Geometry import Geometry
 
 
 class NodeList:

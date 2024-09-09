@@ -1,4 +1,9 @@
-from PyPlus.Node import Node
+import numpy as np
+from scipy.sparse import csr_matrix
+from scipy.sparse.linalg import spsolve
+
+from quadElement_FEM.Element import Element
+from quadElement_FEM.Node import Node
 
 
 

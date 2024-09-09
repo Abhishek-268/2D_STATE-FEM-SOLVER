@@ -1,4 +1,4 @@
-import Element as Element
+from quadElement_FEM.Element import Element
 
 
 class ElementList:

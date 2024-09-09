@@ -1,5 +1,4 @@
 import numpy as np
-from numpy.f2py.auxfuncs import throw_error
 
 
 class Material:
@@ -42,4 +41,3 @@ class Material:
         else:
             raise Exception("Choose one of the above values for the appropriate type: 0 --> plane stress" +
                             "1 --> plane strain")
-

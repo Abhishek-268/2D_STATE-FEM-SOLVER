@@ -1,8 +1,4 @@
-import numpy as np
 import pandas as pd
-from pygmsh.geo import Geometry as geom
-from pygmsh.common.point import Point as Point
-import sys
 
 class Geometry:
     def __init__(self, csvFilename: str):
